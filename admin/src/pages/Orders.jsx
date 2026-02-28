@@ -53,31 +53,47 @@ function Orders() {
                 boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
               }}
             >
-              {/* Box Icon */}
-              <div className="flex-shrink-0 bg-gray-100 border border-gray-300 rounded-xl p-3">
-                <SiEbox className="w-8 h-8 text-gray-700" />
+              <div className="flex-shrink-0">
+                {order.items?.[0]?.image1 ? (
+                  <img
+                    src={order.items[0].image1}
+                    alt={order.items[0].name || "Product"}
+                    className="w-20 h-20 rounded-xl object-cover border border-gray-300 shadow-sm"
+                  />
+                ) : (
+                  <div className="bg-gray-100 border border-gray-300 rounded-xl p-3">
+                    <SiEbox className="w-8 h-8 text-gray-700" />
+                  </div>
+                )}
               </div>
 
-              {/* Items + Address */}
               <div className="flex-1 flex flex-col gap-1 min-w-0">
-                <div className="flex flex-col gap-0.5">
+                <div className="flex flex-col gap-1">
                   {order.items.map((item, i) => (
-                    <p key={i} className="text-[14px] font-semibold text-gray-800 truncate">
-                      {item.name.toUpperCase()} × {item.quantity}
-                      {item.size && <span className="ml-1 text-gray-500 font-normal">({item.size})</span>}
-                      {i < order.items.length - 1 && ','}
-                    </p>
+                    <div key={i} className="flex items-center gap-2">
+                      {item.image1 ? (
+                        <img
+                          src={item.image1}
+                          alt={item.name || "Product"}
+                          className="w-9 h-9 rounded-md object-cover border border-gray-200"
+                        />
+                      ) : null}
+                      <p className="text-[14px] font-semibold text-gray-800 truncate">
+                        {item.name?.toUpperCase()} x {item.quantity}
+                        {item.size && <span className="ml-1 text-gray-500 font-normal">({item.size})</span>}
+                        {i < order.items.length - 1 && ','}
+                      </p>
+                    </div>
                   ))}
                 </div>
                 <div className="text-[13px] text-gray-500 mt-1 flex flex-col gap-0.5">
                   <p className="font-medium text-gray-700">{order.address.firstName} {order.address.lastName}</p>
                   <p>{order.address.street}, {order.address.city}</p>
-                  <p>{order.address.state}, {order.address.country} – {order.address.pinCode}</p>
+                  <p>{order.address.state}, {order.address.country} - {order.address.pinCode}</p>
                   <p>{order.address.phone}</p>
                 </div>
               </div>
 
-              {/* Order Meta */}
               <div className="flex flex-col gap-1 text-[13px] text-gray-600 min-w-[130px]">
                 <p><span className="font-semibold">Items:</span> {order.items.length}</p>
                 <p><span className="font-semibold">Method:</span> {order.paymentMethod}</p>
@@ -88,10 +104,9 @@ function Orders() {
                   </span>
                 </p>
                 <p><span className="font-semibold">Date:</span> {new Date(order.date).toLocaleDateString()}</p>
-                <p className="text-[16px] font-bold text-gray-800 mt-1">₹{order.amount}</p>
+                <p className="text-[16px] font-bold text-gray-800 mt-1">INR {order.amount}</p>
               </div>
 
-              {/* Status Selector */}
               <select
                 value={order.status}
                 onChange={(e) => statusHandler(e, order._id)}
