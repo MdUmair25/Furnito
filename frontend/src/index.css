@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Vonique";
+  src: url("./assets/fonts/Vonique64.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "italiana";
+  src: url("./assets/fonts/italiana.otf") format("opentype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Italianno";
+  src: url("./assets/fonts/Italianno.ttf") format("truetype");
+  font-display: swap;
+}
+
+.vonique {
+  font-family: "Vonique", sans-serif;
+}
+
+@theme {
+  --font-vonique: "Vonique", sans-serif;
+  --font-italiana: "italiana", serif;
+  --font-italianno: "Italianno", cursive;
+}
+
+.grad {
+  background: rgb(102, 169, 247);
+  background: linear-gradient(48deg, rgba(102, 169, 247, 1) 1%, rgba(0, 35, 116, 1) 95%);
+}
+

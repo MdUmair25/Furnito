@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Italiana";
+    src: url("./assets/fonts/italiana.otf") format("opentype");
+    font-display: swap;
+}
+
+/* Google Fonts for Playfair Display and Italiana callback */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Italiana&display=swap');
+
+.italiana {
+    font-family: "Italiana", serif;
+}
+
+.playfair {
+    font-family: "Playfair Display", serif;
+}
