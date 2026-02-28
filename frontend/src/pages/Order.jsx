@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 
 function Order() {
   let [orderData, setOrderData] = useState([])
-  let { currency } = useContext(shopDataContext)
+  let { currency, formatPrice } = useContext(shopDataContext)
   let { serverUrl } = useContext(authDataContext)
   const navigate = useNavigate()
 
@@ -86,7 +86,7 @@ function Order() {
 
                     <div className='flex flex-wrap items-center justify-center md:justify-start gap-4 mt-1'>
                       <p className='text-xl font-black text-blue-700'>
-                        {currency} {item.sellingPrice || item.price}
+                        {currency}{formatPrice(item.sellingPrice || item.price)}
                       </p>
                       <div className='h-4 w-[1px] bg-gray-300 hidden sm:block'></div>
                       <p className='text-sm font-bold text-gray-500 uppercase tracking-tighter'>

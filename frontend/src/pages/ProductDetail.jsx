@@ -9,7 +9,7 @@ import Footer from '../component/Footer'
 
 function ProductDetail() {
   const { productId } = useParams()
-  const { products, currency, addtoCart, loading } = useContext(shopDataContext)
+  const { products, currency, formatPrice, addtoCart, loading } = useContext(shopDataContext)
   const [productData, setProductData] = useState(null)
   const [mainImage, setMainImage] = useState('')
   const [quantity, setQuantity] = useState(1)
@@ -102,11 +102,11 @@ function ProductDetail() {
           {/* Price Section */}
           <div className="flex items-baseline gap-5 lg:my-8 my-5">
             <h2 id="product_price" className="lg:text-4xl md:text-3xl text-3xl font-black text-gray-900">
-              {currency}{sellingPrice || productData.price}
+              {currency}{formatPrice(sellingPrice || productData.price)}
             </h2>
             {originalPrice && (
               <h4 id="original_price" className="lg:text-2xl text-xl line-through text-slate-400">
-                {currency}{originalPrice}
+                {currency}{formatPrice(originalPrice)}
               </h4>
             )}
             {discount > 0 && (

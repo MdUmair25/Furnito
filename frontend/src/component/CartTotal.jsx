@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { shopDataContext } from '../context/ShopContext'
 
 function CartTotal() {
-  const { currency, delivery_fee, getCartAmount } = useContext(shopDataContext)
+  const { currency, formatPrice, delivery_fee, getCartAmount } = useContext(shopDataContext)
   const amount = getCartAmount()
 
   return (
@@ -17,14 +17,14 @@ function CartTotal() {
       <div className='flex flex-col gap-4'>
         <div className='flex justify-between items-center text-gray-600 font-medium'>
           <p className='text-[15px]'>Subtotal</p>
-          <p className='text-lg'>{currency} {amount.toLocaleString()}.00</p>
+          <p className='text-lg'>{currency}{formatPrice(amount)}</p>
         </div>
 
         <div className='w-full h-[1px] bg-gray-200/50'></div>
 
         <div className='flex justify-between items-center text-gray-600 font-medium'>
           <p className='text-[15px]'>Shipping Fee</p>
-          <p className='text-lg'>{currency} {delivery_fee}.00</p>
+          <p className='text-lg'>{currency}{formatPrice(delivery_fee)}</p>
         </div>
 
         <div className='w-full h-[1px] bg-gray-200'></div>
@@ -32,7 +32,7 @@ function CartTotal() {
         <div className='flex justify-between items-center pt-2'>
           <b className='text-xl text-gray-900 font-bold' style={{ fontFamily: 'italiana' }}>Total Amount</b>
           <b className='text-2xl text-blue-700 font-black'>
-            {currency} {amount === 0 ? 0 : (amount + delivery_fee).toLocaleString()}.00
+            {currency}{formatPrice(amount === 0 ? 0 : (amount + delivery_fee))}
           </b>
         </div>
       </div>

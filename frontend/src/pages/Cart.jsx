@@ -7,7 +7,7 @@ import CartTotal from '../component/CartTotal';
 import Footer from '../component/Footer';
 
 function Cart() {
-  const { products, currency, cartItem, updateQuantity } = useContext(shopDataContext)
+  const { products, currency, formatPrice, cartItem, updateQuantity } = useContext(shopDataContext)
   const [cartData, setCartData] = useState([])
   const navigate = useNavigate()
 
@@ -72,7 +72,7 @@ function Cart() {
                       </p>
                       <div className="flex items-center gap-3">
                         <p className="text-lg font-black text-blue-600">
-                          {currency} {productData.sellingPrice || productData.price}
+                          {currency}{formatPrice(productData.sellingPrice || productData.price)}
                         </p>
                         {item.size !== 'Default' && (
                           <span className="px-2 py-0.5 bg-gray-100 border border-gray-200 text-[12px] font-bold text-gray-500 rounded-md uppercase">

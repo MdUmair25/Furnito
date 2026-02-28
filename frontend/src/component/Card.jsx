@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { FaStar } from 'react-icons/fa'
 
 function Card({ name, image, id, price, sellingPrice, originalPrice, discount, rating, title }) {
-  const { currency } = useContext(shopDataContext)
+  const { currency, formatPrice } = useContext(shopDataContext)
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -40,11 +40,11 @@ function Card({ name, image, id, price, sellingPrice, originalPrice, discount, r
         <p className="text-[13px] text-gray-400 font-medium truncate mt-0.5">{title || "Premium Collection"}</p>
         <div className="flex items-center gap-2 mt-2">
           <span className="text-lg font-black text-gray-900">
-            {currency}{sellingPrice || price}
+            {currency}{formatPrice(sellingPrice || price)}
           </span>
           {originalPrice && (
             <span className="text-sm font-medium text-gray-400 line-through">
-              {currency}{originalPrice}
+              {currency}{formatPrice(originalPrice)}
             </span>
           )}
         </div>

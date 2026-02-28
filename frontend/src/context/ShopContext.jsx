@@ -14,8 +14,13 @@ function ShopContext({ children }) {
   const [loading, setLoading] = useState(false)
   const { userData } = useContext(userDataContext)
   const { serverUrl } = useContext(authDataContext)
-  const currency = 'INR'
+  const currency = '₹'
   const delivery_fee = 200
+
+  const formatPrice = (value) => {
+    const numberValue = Number(value) || 0
+    return numberValue.toLocaleString("en-IN")
+  }
 
   const getProducts = async () => {
     try {
@@ -131,6 +136,7 @@ function ShopContext({ children }) {
   const value = {
     products,
     currency,
+    formatPrice,
     delivery_fee,
     getProducts,
     search,
