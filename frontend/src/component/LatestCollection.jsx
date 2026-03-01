@@ -5,17 +5,35 @@ import { shopDataContext } from '../context/ShopContext';
 import Card from './Card';
 
 const filterTabs = ['All', 'Chair', 'Sofa', 'Bed', 'Table'];
+const categoryTabs = filterTabs.filter((tab) => tab !== 'All');
+
+const shuffleArray = (arr) => {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
 
 function LatestCollection() {
   const { products } = useContext(shopDataContext);
   const [activeFilter, setActiveFilter] = useState('All');
 
-  const latestProducts = useMemo(() => products.slice(0, 8), [products]);
+  const allBalancedProducts = useMemo(() => {
+    const picked = [];
+    categoryTabs.forEach((category) => {
+      const categoryItems = products.filter((item) => item.category === category);
+      const randomTwo = shuffleArray(categoryItems).slice(0, 2);
+      picked.push(...randomTwo);
+    });
+    return shuffleArray(picked);
+  }, [products]);
 
   const filteredProducts = useMemo(() => {
-    if (activeFilter === 'All') return latestProducts;
-    return latestProducts.filter((item) => item.category === activeFilter);
-  }, [activeFilter, latestProducts]);
+    if (activeFilter === 'All') return allBalancedProducts;
+    return products.filter((item) => item.category === activeFilter).slice(0, 8);
+  }, [activeFilter, allBalancedProducts, products]);
 
   return (
     <div className="bg-white w-full">

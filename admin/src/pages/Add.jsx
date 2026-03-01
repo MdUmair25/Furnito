@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import Nav from '../component/Nav'
 import Sidebar from '../component/Sidebar'
 import { authDataContext } from '../context/AuthContext'
@@ -28,7 +28,9 @@ function Add() {
   const [ratingCount, setRatingCount] = useState("")
   const [bestseller, setBestSeller] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const { serverUrl } = useContext(authDataContext)
+  const categoryDropdownRef = useRef(null)
 
   // Calculate discount whenever prices change
   useEffect(() => {
@@ -43,6 +45,17 @@ function Add() {
       setDiscount(0)
     }
   }, [originalPrice, sellingPrice])
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(event.target)) {
+        setIsCategoryOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick)
+    return () => document.removeEventListener("mousedown", handleOutsideClick)
+  }, [])
 
   const handleAddProduct = async (e) => {
     e.preventDefault()
@@ -91,6 +104,7 @@ function Add() {
     { id: 'image3', state: image3, setter: setImage3, required: true, label: 'Angle 3' },
     { id: 'image4', state: image4, setter: setImage4, required: true, label: 'Angle 4' },
   ]
+  const categoryOptions = ["Chair", "Sofa", "Bed", "Table"]
 
   return (
     <div className="w-full min-h-screen bg-gray-200 text-gray-900 overflow-x-hidden font-sans">
@@ -149,12 +163,38 @@ function Add() {
             <section className="bg-white/70 backdrop-blur-xl border border-white rounded-3xl p-6 shadow-xl shadow-gray-200/50">
               <h3 className={labelCls}><TbCategory2 className="w-4 h-4 text-blue-500" /> Category</h3>
               <div className="mt-4">
-                <select className={inputCls} onChange={(e) => setCategory(e.target.value)} value={category}>
-                  <option value="Chair">Chair</option>
-                  <option value="Sofa">Sofa</option>
-                  <option value="Bed">Bed</option>
-                  <option value="Table">Table</option>
-                </select>
+                <div className="relative" ref={categoryDropdownRef}>
+                  <button
+                    type="button"
+                    className={`${inputCls} h-[50px] flex items-center justify-between cursor-pointer ${isCategoryOpen ? "ring-2 ring-blue-500/20 border-blue-500" : ""}`}
+                    onClick={() => setIsCategoryOpen(prev => !prev)}
+                  >
+                    <span className="font-semibold text-gray-800">{category}</span>
+                    <span className={`text-gray-500 transition-transform duration-200 ${isCategoryOpen ? "rotate-180" : ""}`}>
+                      <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.12l3.71-3.89a.75.75 0 1 1 1.08 1.04l-4.25 4.46a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clipRule="evenodd" />
+                      </svg>
+                    </span>
+                  </button>
+
+                  {isCategoryOpen && (
+                    <div className="absolute top-[56px] left-0 w-full z-30 overflow-hidden rounded-2xl border border-blue-100 bg-white/95 backdrop-blur-xl shadow-xl shadow-blue-100/40">
+                      {categoryOptions.map((item) => (
+                        <button
+                          key={item}
+                          type="button"
+                          onClick={() => {
+                            setCategory(item)
+                            setIsCategoryOpen(false)
+                          }}
+                          className={`w-full text-left px-4 py-3 text-[14px] font-semibold transition-colors ${category === item ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-50"}`}
+                        >
+                          {item}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </section>
           </div>
